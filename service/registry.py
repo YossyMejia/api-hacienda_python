@@ -2,25 +2,54 @@
 """
 import json
 from infrastructure import registry
-from service import utils
+from helpers import utils
 
-
-def get_person(id: str) -> dict:
+def get_person(person_id: str) -> dict:
     """
     Returns information about the specified person.
 
-    :param id: str - An 'id' string representing the unique identification to find.
+    :param person_id: str - An 'id' string representing the unique
+        identification to find.
     :returns: dict - A dictionary with keys:
-        'httpstatus' : an http response status code
-        'data' : data for the response's body
-        ['error'] : An optional error message if an exception/error occurred
-        ['message'] : An optional message for additional information
+
+        - 'http_status' : an http response status code.
+        - 'data' : data for the response's body.
+        - ['error'] : An optional error message if an
+          exception/error occurred.
+        - ['message'] : An optional message for additional
+          information.
+        - ['headers'] : An optional dictionary with headers
+          to be sent.
+
     """
-    # should prolly check the id length and restrict it to the proper length...
-    # make a "constant" for length, which value should be 9...
-    # TODO i guess... too lazy rn
-    result = registry.get_person(id)
-    response = utils.buildResponseData(result, dict, 'Person not found for the id: "' + id + '".')
+    max_length = 12
+    if len(person_id) > max_length:
+      return utils.build_response_data({
+        'error': {
+          'http_status': 400,
+          'code': 400,
+          'detail': (
+            'ID length is too long.'
+            ' Must be {} characters or less.'
+            ).format(max_length)
+        }
+      })
 
+    person =  registry.get_person(person_id)
+    if person is None:
+      return utils.build_response_data({
+        'error': {
+          'http_status': 404,
+          'code': 404,
+          'detail': 'Person not found.'
+          }
+      })
 
+    result = {'data': person}
+
+    response = utils.build_response_data(
+        result,
+        warn_msg='Person not found for the id: "{}".'.format(
+            person_id
+            ))
     return response

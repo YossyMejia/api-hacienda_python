@@ -1,50 +1,45 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8"/>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <style>
+        .image {
+            margin-top: 20px;
+            margin-right: 20px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .container {
+            font-size: small
+        }
+
+        .table {
+            font-size: small;
+            margin-top: 20px;
+        }
+
+        .header table {
+            font-size: small
+        }
+
+        .invoice-info {
+            position: absolute;
+            top: 0;
+            right: 14px;
+            text-align: right
+        }
+    </style>
+</head>
     <body>
-        <style>
-            .image {
-                margin-top: 20px;
-                margin-right: 20px;
-                max-width: 150px;
-                max-height: 150px;
-            }
-
-			.container {
-				font-size: 0.85rem;
-			}
-
-			.table {
-				font-size: 0.85rem;
-                margin-top: 20px;
-			}
-
-			.text-left {
-				text-align: left !important
-			}
-
-			.text-right {
-				text-align: right !important
-			}
-
-			.header table {
-                font-size: 1rem
-			}
-
-			.invoice-info {
-                position: absolute;
-                top: 0;
-                right: 0;
-			}
-        </style>
         <div class="container">
             <table class="header table">
                 <tr>
+                    {% if logo %}
                     <td>
                         <img src="data:;base64,{{ logo }}" class="image" />
                     </td>
+                    {% endif %}
                     <td>
                         <table class="table table-sm">
                             <tr>
@@ -64,12 +59,6 @@
                             </tr>
                             <tr>
                                 <td>
-                                </td>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                     Correo electr&oacutenico: {{company.email}}
                                 </td>
                             </tr>
@@ -84,12 +73,8 @@
                         <table class="table table-sm invoice-info">
                             <tr>
                                 <td>
-                                    <b>{{type}}</b><br>
+                                    <b>{{document_type}}</b><br>
                                     {{consecutive}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
                                 </td>
                             </tr>
                             <tr>
@@ -99,14 +84,8 @@
                             </tr>
                             <tr>
                                 <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
+                                    <b>Nro. Referencia:</b><br />
+                                    {{ref_num}}
                                 </td>
                             </tr>
                         </table>
@@ -114,3 +93,5 @@
                 </tr>
             </table>
         </div>
+    </body>
+</html>
